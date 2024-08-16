@@ -12,4 +12,11 @@
     <version>${revision}</version>
     <name>rest</name>
     <description>Rest</description>
+    <dependencies>
+        <dependency>
+            <groupId>com.tinqinacademy.authentication</groupId>
+            <artifactId>core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
