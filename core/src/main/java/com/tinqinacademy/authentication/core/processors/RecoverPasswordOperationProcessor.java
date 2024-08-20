@@ -60,7 +60,7 @@ public class RecoverPasswordOperationProcessor extends BaseProcessor implements 
     }
 
     private User buildUserWithNewPassword(User user, String encodedPassword) {
-        User built = user.builder()
+        User built = user.toBuilder()
                 .password(encodedPassword)
                 .build();
         return built;

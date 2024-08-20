@@ -38,12 +38,16 @@ public class PromoteUserToAdminProcessor extends BaseProcessor implements Promot
                     checkTheRole(user);
                     user.setRole(Role.ADMIN);
                     userRepository.save(user);
-                    PromoteUserToAdminOutput output = PromoteUserToAdminOutput.builder()
-                            .message("Successfully promoted user!")
-                            .build();
+                    PromoteUserToAdminOutput output = getPromoteUserToAdminOutput();
                     return output;
                 }).toEither()
                 .mapLeft(throwable -> errorMapper.mapError(throwable));
+    }
+
+    private PromoteUserToAdminOutput getPromoteUserToAdminOutput() {
+        return PromoteUserToAdminOutput.builder()
+                .message("Successfully promoted user!")
+                .build();
     }
 
     private void checkTheRole(User user) throws UserIsAlreadyAdminException {
