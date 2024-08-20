@@ -49,8 +49,9 @@ public class RegisterOperationProcessor extends BaseProcessor implements Registe
                     checkForUsername(input);
                     checkForEmail(input);
                     User converted = conversionService.convert(input, User.class);
-                    User built = buildConvertedUserWithPassword(input, converted);
-                    User fromDatabase = userRepository.save(built);
+                    // User built = buildConvertedUserWithPassword(input, converted);
+                    converted.setPassword(passwordEncoder.encode(input.getPassword()));
+                    User fromDatabase = userRepository.save(converted);
                     String confirmationCode = confirmationCodeGenerator.generateConfirmationCode();
                     ConfirmationCode builtConfirmationCode = getConfirmationCode(confirmationCode, fromDatabase);
                     confirmationCodeRepository.save(builtConfirmationCode);

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class JwtBlacklistCacheService {
 
     private final CacheManager cacheManager;
-    @Value("${env.JWT_BLACKLIST}")
+    @Value("JWT_BLACKLIST")
     private String JWT_BLACKLIST;
 
     private Cache<Object, Object> getCaffeineCache() {

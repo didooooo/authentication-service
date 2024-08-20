@@ -23,14 +23,14 @@ import org.springframework.stereotype.Service;
 public class LoginOperationProcessor extends BaseProcessor implements LoginOperation {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    //private final JwtService jwtService;
     private final ErrorMapper errorMapper;
 
-    public LoginOperationProcessor(ConversionService conversionService, Validator validator, UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, ErrorMapper errorMapper) {
+    public LoginOperationProcessor(ConversionService conversionService, Validator validator, UserRepository userRepository, PasswordEncoder passwordEncoder,ErrorMapper errorMapper){// JwtService jwtService, ErrorMapper errorMapper) {
         super(conversionService, validator);
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtService = jwtService;
+      //  this.jwtService = jwtService;
         this.errorMapper = errorMapper;
     }
 
@@ -41,10 +41,10 @@ public class LoginOperationProcessor extends BaseProcessor implements LoginOpera
                     User user = getUserIfExists(input);
                     checkForPassword(input, user);
                     checkForIfThisAccountIsConfirmed(user);
-                    String generatedToken = jwtService.generateToken(user);
+                    //String generatedToken = jwtService.generateToken(user);
                     LoginOutput output = LoginOutput
                             .builder()
-                            .jwt(generatedToken)
+                            //.jwt(generatedToken)
                             .build();
                     return output;
                 }).toEither()

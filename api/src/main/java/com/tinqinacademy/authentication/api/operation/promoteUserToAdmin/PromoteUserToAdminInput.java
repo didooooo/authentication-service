@@ -2,7 +2,9 @@ package com.tinqinacademy.authentication.api.operation.promoteUserToAdmin;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tinqinacademy.authentication.api.base.OperationInput;
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +17,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PromoteUserToAdminInput implements OperationInput {
-    @NotBlank
+    @NotNull
     private UUID userId;
-    @JsonIgnore
-    private java.util.UUID userContextId;
+    @Hidden
+    private UUID userContextId;
 }

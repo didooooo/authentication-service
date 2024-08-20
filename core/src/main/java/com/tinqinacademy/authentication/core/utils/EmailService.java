@@ -4,6 +4,7 @@ import com.tinqinacademy.authentication.api.exceptions.customExceptions.EmailExc
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
+    @Value("${spring.application.name}")
     private String emailSender;
     private final JavaMailSender javaMailSender;
     public void sendEmailForAccountActivation(String userFirstName, String toEmail, String randomGeneratedCode) throws EmailException {
