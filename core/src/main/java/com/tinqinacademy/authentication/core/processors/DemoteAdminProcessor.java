@@ -36,6 +36,8 @@ public class DemoteAdminProcessor extends BaseProcessor implements DemoteAdminOp
     @Override
     public Either<Errors, DemoteAdminOutput> process(DemoteAdminInput input) {
         return Try.of(() -> {
+
+                    log.info("Start demote admin {}",input);
                     validate(input);
                     checkIfSomebodyIsTryingToCrashTheSystem(input);
                     User user = userRepository.findById(input.getUserId()).orElseThrow(() -> new UserDoesNotExist());
@@ -44,12 +46,23 @@ public class DemoteAdminProcessor extends BaseProcessor implements DemoteAdminOp
                             .role(Role.USER)
                             .build();
                     userRepository.save(built);
+
+                    DemoteAdminOutput output = getDemoteAdminOutput();
+                    log.info("End demote admin {}",output);
+
                     DemoteAdminOutput output = DemoteAdminOutput.builder()
                             .message("Successfully demoted user!")
                             .build();
                     return output;
                 }).toEither()
                 .mapLeft(errorMapper::mapError);
+    }
+
+    private  DemoteAdminOutput getDemoteAdminOutput() {
+        DemoteAdminOutput output = DemoteAdminOutput.builder()
+                .message("Successfully demoted user!")
+                .build();
+        return output;
     }
 
     private void checkTheRole(User user) throws UserIsNotAdminException {

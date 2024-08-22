@@ -17,6 +17,7 @@ import com.tinqinacademy.authentication.persistence.repositories.UserRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import jakarta.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class RegisterOperationProcessor extends BaseProcessor implements RegisterOperation {
     private final ErrorMapper errorMapper;
     private final UserRepository userRepository;
@@ -45,6 +47,7 @@ public class RegisterOperationProcessor extends BaseProcessor implements Registe
     @Override
     public Either<Errors, RegisterOutput> process(RegisterInput input) {
         return Try.of(() -> {
+                    log.info("Start register {}",input);
                     validate(input);
                     checkForUsername(input);
                     checkForEmail(input);
@@ -56,12 +59,18 @@ public class RegisterOperationProcessor extends BaseProcessor implements Registe
                     ConfirmationCode builtConfirmationCode = getConfirmationCode(confirmationCode, fromDatabase);
                     confirmationCodeRepository.save(builtConfirmationCode);
                     emailService.sendEmailForAccountActivation(fromDatabase.getUsername(), fromDatabase.getEmail(), confirmationCode);
-                    RegisterOutput output = RegisterOutput.builder()
-                            .id(fromDatabase.getUuid())
-                            .build();
+                    RegisterOutput output = getRegisterOutput(fromDatabase);
+                    log.info("End register {}",output);
                     return output;
                 }).toEither()
                 .mapLeft(throwable -> errorMapper.mapError(throwable));
+    }
+
+    private RegisterOutput getRegisterOutput(User fromDatabase) {
+        RegisterOutput output = RegisterOutput.builder()
+                .id(fromDatabase.getUuid())
+                .build();
+        return output;
     }
 
     private User buildConvertedUserWithPassword(RegisterInput input, User converted) {

@@ -15,11 +15,13 @@ import com.tinqinacademy.authentication.persistence.repositories.UserRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import jakarta.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class LoginOperationProcessor extends BaseProcessor implements LoginOperation {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -37,18 +39,36 @@ public class LoginOperationProcessor extends BaseProcessor implements LoginOpera
     @Override
     public Either<Errors, LoginOutput> process(LoginInput input) {
         return Try.of(() -> {
+                    log.info("Start login {}",input);
                     validate(input);
                     User user = getUserIfExists(input);
                     checkForPassword(input, user);
                     checkForIfThisAccountIsConfirmed(user);
+
+                    String generatedToken = jwtService.generateToken(user);
+
                     //String generatedToken = jwtService.generateToken(user);
+
                     LoginOutput output = LoginOutput
                             .builder()
                             //.jwt(generatedToken)
                             .build();
+
+                    //String generatedToken = jwtService.generateToken(user);
+                    LoginOutput output = getLoginOutput();
+                    log.info("End login {}",output);
+
                     return output;
                 }).toEither()
                 .mapLeft(throwable -> errorMapper.mapError(throwable));
+    }
+
+    private LoginOutput getLoginOutput() {
+        LoginOutput output = LoginOutput
+                .builder()
+                //.jwt(generatedToken)
+                .build();
+        return output;
     }
 
     private void checkForIfThisAccountIsConfirmed(User user) throws AccountIsNotConfirmedException {

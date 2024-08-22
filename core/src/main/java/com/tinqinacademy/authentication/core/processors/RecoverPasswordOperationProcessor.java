@@ -14,11 +14,13 @@ import com.tinqinacademy.authentication.persistence.repositories.UserRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import jakarta.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class RecoverPasswordOperationProcessor extends BaseProcessor implements RecoverPasswordOperation {
     private final UserRepository userRepository;
     private final RandomPasswordGenerator randomPasswordGenerator;
@@ -38,6 +40,7 @@ public class RecoverPasswordOperationProcessor extends BaseProcessor implements 
     @Override
     public Either<Errors, RecoverPasswordOutput> process(RecoverPasswordInput input) {
         return Try.of(() -> {
+                    log.info("Start recover password {}",input);
                     validate(input);
                     User user = getUserIfExists(input);
                     String randomPassword = randomPasswordGenerator.generateRandomPassword();
@@ -46,6 +49,7 @@ public class RecoverPasswordOperationProcessor extends BaseProcessor implements 
                     userRepository.save(built);
                     emailService.sendEmailWithNewPassword(built.getFirstname(), built.getEmail(), encodedPassword);
                     RecoverPasswordOutput output = buildOutput();
+                    log.info("End recover password {}",output);
                     return output;
                 }).toEither()
                 .mapLeft(throwable -> errorMapper.mapError(throwable));
