@@ -15,10 +15,12 @@ import com.tinqinacademy.authentication.persistence.repositories.UserRepository;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
 import jakarta.validation.Validator;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class PromoteUserToAdminProcessor extends BaseProcessor implements PromoteUserToAdminOperation {
     private final UserRepository userRepository;
     private final ErrorMapper errorMapper;
@@ -32,15 +34,21 @@ public class PromoteUserToAdminProcessor extends BaseProcessor implements Promot
     @Override
     public Either<Errors, PromoteUserToAdminOutput> process(PromoteUserToAdminInput input) {
         return Try.of(() -> {
+                    log.info("Start promote user to admin {}",input);
                     validate(input);
                     checkIfSomebodyIsTryingToCrashTheSystem(input);
                     User user = userRepository.findById(input.getUserId()).orElseThrow(() -> new UserDoesNotExist());
                     checkTheRole(user);
                     user.setRole(Role.ADMIN);
                     userRepository.save(user);
+<<<<<<< Updated upstream
                     PromoteUserToAdminOutput output = PromoteUserToAdminOutput.builder()
                             .message("Successfully promoted user!")
                             .build();
+=======
+                    PromoteUserToAdminOutput output = getPromoteUserToAdminOutput();
+                    log.info("End promote user to admin {}",output);
+>>>>>>> Stashed changes
                     return output;
                 }).toEither()
                 .mapLeft(throwable -> errorMapper.mapError(throwable));
