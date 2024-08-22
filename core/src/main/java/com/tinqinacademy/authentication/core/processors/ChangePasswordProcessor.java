@@ -36,13 +36,16 @@ public class ChangePasswordProcessor extends BaseProcessor implements ChangePass
     @Override
     public Either<Errors, ChangePasswordOutput> process(ChangePasswordInput input) {
         return Try.of(() -> {
+
             log.info("Start change password {}",input);
+
                     validate(input);
                     User user = getUser(input);
                     checkThePasswords(input, user);
                     User built = buildTheUserWithTheNewPassword(input, user);
                     userRepository.save(built);
                     ChangePasswordOutput output = getChangePasswordOutput();
+
                     log.info("End change password {}",output);
                     return output;
                 }).toEither()

@@ -38,7 +38,9 @@ public class ConfirmRegistrationProcessor extends BaseProcessor implements Confi
     @Override
     public Either<Errors, ConfirmRegistrationOutput> process(ConfirmRegistrationInput input) {
         return Try.of(() -> {
+
                     log.info("Start confirm registration {}",input);
+
                     validate(input);
                     ConfirmationCode confirmationCode = getConfirmationCode(input);
                     User user = getUserByEmail(confirmationCode);
@@ -48,7 +50,9 @@ public class ConfirmRegistrationProcessor extends BaseProcessor implements Confi
                     userRepository.save(built);
                     confirmationCodeRepository.delete(confirmationCode);
                     ConfirmRegistrationOutput output = getConfirmRegistrationOutput();
+
                     log.info("End confirm registration {}",output);
+
                     return output;
                 }).toEither()
                 .mapLeft(throwable -> errorMapper.mapError(throwable));

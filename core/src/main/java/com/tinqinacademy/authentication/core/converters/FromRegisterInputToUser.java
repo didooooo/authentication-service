@@ -13,6 +13,7 @@ public class FromRegisterInputToUser implements Converter<RegisterInput, User> {
         return User.builder()
                 .firstname(source.getFirstName())
                 .lastname(source.getLastName())
+                .email(source.getEmail())
                 .role(Role.USER)
                 .isConfirmed(false)
                 .phoneNumber(source.getPhoneNumber())
