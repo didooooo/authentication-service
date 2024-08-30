@@ -46,10 +46,7 @@ public class PromoteUserToAdminProcessor extends BaseProcessor implements Promot
                             .message("Successfully promoted user!")
                             .build();
 
-                    PromoteUserToAdminOutput output = getPromoteUserToAdminOutput();
                     log.info("End promote user to admin {}",output);
-
-                    PromoteUserToAdminOutput output = getPromoteUserToAdminOutput();
                     return output;
                 }).toEither()
                 .mapLeft(throwable -> errorMapper.mapError(throwable));
@@ -62,7 +59,7 @@ public class PromoteUserToAdminProcessor extends BaseProcessor implements Promot
     }
 
     private void checkTheRole(User user) throws UserIsAlreadyAdminException {
-        if (user.getRole().equals(Role.ADMIN)) throw new UserIsAlreadyAdminException();
+        if (user.getRole().toString().equals(Role.ADMIN.toString())) throw new UserIsAlreadyAdminException();
     }
 
     private void checkIfSomebodyIsTryingToCrashTheSystem(PromoteUserToAdminInput input) throws CannotPromoteYourselfException {

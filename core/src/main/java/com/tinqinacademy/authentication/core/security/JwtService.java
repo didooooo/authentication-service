@@ -19,11 +19,11 @@ import java.util.function.Function;
 
 
 
-//@Service
+@Service
 @RequiredArgsConstructor
 public class JwtService {
 
-    //@Value("${spring.security.jwt.secret}")
+    @Value("c1870b4cde6f1261fa75aa9bef56ea27498253cc447328b1116adad2c576dab1")
     private String SECRET_KEY;
     private final UserRepository userRepository;
     private final JwtBlacklistCacheService jwtBlacklist;

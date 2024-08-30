@@ -8,9 +8,9 @@
         <version>${revision}</version>
     </parent>
     <groupId>com.tinqinacademy.authentication</groupId>
-    <artifactId>rest-export</artifactId>
+    <artifactId>restexport</artifactId>
     <version>${revision}</version>
-    <name>rest-export</name>
+    <name>restexport</name>
     <description>Rest Export</description>
     <dependencies>
         <dependency>

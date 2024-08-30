@@ -8,4 +8,5 @@ public class URLMapping {
     public final static String CHANGE_PASSWORD = "/auth/change-password";
     public final static String PROMOTE = "/auth/promote";
     public final static String DEMOTE = "/auth/demote";
+    public final static String VALIDATE_JWT = "/api/internal/jwt";
 }

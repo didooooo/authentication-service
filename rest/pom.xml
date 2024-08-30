@@ -9,7 +9,6 @@
     </parent>
     <groupId>com.tinqinacademy.authentication</groupId>
     <artifactId>rest</artifactId>
-    <version>${revision}</version>
     <name>rest</name>
     <description>Rest</description>
     <dependencies>
@@ -19,4 +18,21 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.tinqinacademy.authentication.rest.AuthenticationApplication</mainClass>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

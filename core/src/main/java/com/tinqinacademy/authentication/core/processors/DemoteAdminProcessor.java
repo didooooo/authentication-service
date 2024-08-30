@@ -50,9 +50,6 @@ public class DemoteAdminProcessor extends BaseProcessor implements DemoteAdminOp
                     DemoteAdminOutput output = getDemoteAdminOutput();
                     log.info("End demote admin {}",output);
 
-                    DemoteAdminOutput output = DemoteAdminOutput.builder()
-                            .message("Successfully demoted user!")
-                            .build();
                     return output;
                 }).toEither()
                 .mapLeft(errorMapper::mapError);

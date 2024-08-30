@@ -14,7 +14,7 @@
         <module>rest</module>
         <module>api</module>
         <module>persistence</module>
-        <module>rest-export</module>
+        <module>restexport</module>
     </modules>
     <groupId>com.tinqinacademy.authentication</groupId>
     <artifactId>Authentication</artifactId>
@@ -139,6 +139,15 @@
             <groupId>io.vavr</groupId>
             <artifactId>vavr</artifactId>
             <version>0.10.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
